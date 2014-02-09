@@ -1,0 +1,21 @@
+#menu{
+	position:relative;
+}
+#menu ul{
+	line-style:none;
+	padding:0;
+}
+#menu ul li{
+	width:900px;
+	height:;
+	float:left;
+	text-align:center;
+	display:block;
+}
+#menu ul li a{
+	
+
+}
+#menu ul li:hover{
+	transition:2s;
+}
