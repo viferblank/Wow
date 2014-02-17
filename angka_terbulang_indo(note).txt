@@ -1,0 +1,106 @@
+Tulisan ini adalah kelanjutan dari tulisan sebelumnya tentang "Dasar Pembuatan Fungsi Terbilang". Pada tulisan ini akan dibahas gimana caranya memodifikasi fungsi terbilang dasar yang telah kita buat agar dapat menangani bilangan-bilangan yang non-regular, dalam Bahasa Indonesia. Bahasa Indonesia dipilih lebih dulu sebagai contoh karena nama bilangan dalam Bahasa Indonesia relatif lebih sederhana daripada bahasa lainnya, seperti Bahasa Inggris dan Jawa.
+ 
+Dalam Bahasa Indonesia, bilangan yang termasuk irregular adalah bilangan 10 (sepuluh), 11 (sebelas), 100 (seratus), dan 1000 (seribu). Sementara itu yang termasuk bilangan semi-regular adalah bilangan dari 12 hingga 19 (bilangan belasan kecuali 11), yang menggunakan aturan sendiri yaitu nama bilangan sisa ditambah akhiran 'belas'.
+ 
+Mari kita mulai dulu dari bentuk dasar berikut:
+ 
+function terbilang($n) {
+  if ($n < 0) return 'negatif ' . terbilang(-$n);
+  if ($n < 10) {
+    $nama = array('nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan');
+    return $nama[$n];
+  }
+  if ($n < 100) {
+    $kepala = floor($n / 10);
+    $sisa = $n % 10;
+    $hasil = terbilang($kepala) . ' puluh';
+  }
+  else if ($n < 1000) {
+    $kepala = floor($n / 100);
+    $sisa = $n % 100;
+    $hasil = terbilang($kepala) . ' ratus';
+  }
+  else if ($n < 1000000) {
+    $kepala = floor($n / 1000);
+    $sisa = $n % 1000;
+    $hasil = terbilang($kepala) . ' ribu';
+  }
+  else if ($n < 1000000000) {
+    $kepala = floor($n / 1000000);
+    $sisa = $n % 1000000;
+    $hasil = terbilang($kepala) . ' juta';
+  }
+  else return false;
+  if ($sisa > 0) $hasil .= ' ' . terbilang($sisa);
+  return $hasil;
+}
+ 
+Untuk menangani bilangan 10 hingga 19 dapat menambahkan kode-kode berikut:
+ 
+    if ($kepala == 1) {
+      if ($sisa == 0) return 'sepuluh';
+      if ($sisa == 1) return 'sebelas';
+      return terbilang($sisa) . ' belas';
+    }
+ 
+sebelum kode:
+ 
+    $hasil = terbilang($kepala) . ' puluh';
+ 
+Untuk mengatasi bilangan 100 caranya dengan menggunakan kode berikut:
+ 
+    if ($kepala == 1) $hasil = 'seratus';
+    else
+ 
+sebelum kode:
+ 
+    $hasil = terbilang($kepala) . ' ratus';
+ 
+sehingga menjadi:
+ 
+    if ($kepala == 1) $hasil = 'seratus';
+    else $hasil = terbilang($kepala) . ' ratus';
+ 
+Untuk bilangan 1000 sama kasusnya dgn bilangan 100 di atas. Pertanyaannya adalah, kenapa kalo pada kasus bilangan 10 langsung menggunakan return, sedangkan pada kasus bilangan 100 dan 1000 tidak langsung return tapi disimpan dalam variabel $hasil dulu? Jawabannya karena dalam Bahasa Indonesia tidak ada "sepuluh satu", "sepuluh dua", dst. yg artinya kata "sepuluh" sudah final dan tidak mungkin ditambah dengan nama bilangan sisanya. Sedangkan untuk 100 dan 1000 terdapat "seratus satu", "seratus dua", dst serta "seribu satu", dst, sehingga jangan di-return dulu tapi tunggu nanti siapa tahu ada sisa yg hrs ditambahkan.
+ 
+So, hasil akhirnya adalah:
+ 
+function terbilang($n) {
+  if ($n < 0) return 'negatif ' . terbilang(-$n);
+  if ($n < 10) {
+    $nama = array('nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan');
+    return $nama[$n];
+  }
+  if ($n < 100) {
+    $kepala = floor($n / 10);
+    $sisa = $n % 10;
+    if ($kepala == 1) {
+      if ($sisa == 0) return 'sepuluh';
+      if ($sisa == 1) return 'sebelas';
+      return terbilang($sisa) . ' belas';
+    }
+    $hasil = terbilang($kepala) . ' puluh';
+  }
+  else if ($n < 1000) {
+    $kepala = floor($n / 100);
+    $sisa = $n % 100;
+    if ($kepala == 1) $hasil = 'seratus';
+    else $hasil = terbilang($kepala) . ' ratus';
+  }
+  else if ($n < 1000000) {
+    $kepala = floor($n / 1000);
+    $sisa = $n % 1000;
+    if ($kepala == 1) $hasil = 'seribu';
+    else $hasil = terbilang($kepala) . ' ribu';
+  }
+  else if ($n < 1000000000) {
+    $kepala = floor($n / 1000000);
+    $sisa = $n % 1000000;
+    $hasil = terbilang($kepala) . ' juta';
+  }
+  else return false;
+  if ($sisa > 0) $hasil .= ' ' . terbilang($sisa);
+  return $hasil;
+}
+ 
+Demikian dulu untuk implementasi fungsi terbilang dengan Bahasa Indonesia.

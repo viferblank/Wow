@@ -1,0 +1,12 @@
+table.A{
+	width:100%;
+	border:1px solid black;
+	cellpadding:10px;
+}
+table.A th{
+	margin:20px;
+	background:#bdc3c7;
+}
+table.A td{
+	background:ecf0f1;
+}
